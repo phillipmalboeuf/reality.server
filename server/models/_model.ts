@@ -1,17 +1,17 @@
 
-import { ObjectId } from 'mongodb'
+import { ObjectId, Db } from 'mongodb'
 
 export default class Model {
-  static db = null
-  static collection = 'models'
+  static db: Db = null
+  static collection: string = 'models'
   static sort = []
 
 
-  static preprocess(data) {
+  static preprocess(data: any) {
     return Promise.resolve(data)
   }
 
-  static postprocess(data) {
+  static postprocess(data: any) {
     return Promise.resolve(data)
   }
 
@@ -26,7 +26,7 @@ export default class Model {
 
 
   static get(_id) {
-    return this.get_where({ _id: ObjectId(_id) })
+    return this.get_where({ _id: new ObjectId(_id) })
   }
 
   static get_where(filters) {
@@ -40,7 +40,7 @@ export default class Model {
   }
 
   static update(_id, data) {
-    return this.update_where({ _id: ObjectId(_id) }, data)
+    return this.update_where({ _id: new ObjectId(_id) }, data)
   }
 
   static update_where(filters, data) {
@@ -49,7 +49,7 @@ export default class Model {
   }
 
   static destroy(_id) {
-    return this.db.collection(this.collection).deleteOne({ _id: ObjectId(_id) })
+    return this.db.collection(this.collection).deleteOne({ _id: new ObjectId(_id) })
       .then(result => ({ deleted: result.result.n }))
   }
 
